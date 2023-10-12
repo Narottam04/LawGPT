@@ -1,0 +1,14 @@
+langchain
+streamlit
+transformers
+requests
+einops
+accelerate
+pdfminer.six
+bs4
+sentence_transformers
+chromadb
+pypdf
+InstructorEmbedding
+FastAPI
+optimum
