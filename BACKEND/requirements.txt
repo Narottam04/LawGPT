@@ -12,3 +12,4 @@ pypdf
 InstructorEmbedding
 FastAPI
 optimum
+streamlit

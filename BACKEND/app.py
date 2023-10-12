@@ -22,6 +22,7 @@ db = Chroma(persist_directory="db", embedding_function=embeddings)
 
 
 model_name_or_path = "TheBloke/Llama-2-13B-chat-GPTQ"
+# model_name_or_path = "TheBloke/Llama-2-7b-Chat-GPTQ"
 model_basename = "model"
 
 tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=True)
@@ -40,8 +41,10 @@ tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=True)
 model = AutoModelForCausalLM.from_pretrained(
     model_name_or_path,
     device_map="auto",
-    trust_remote_code=False,
-    revision="main"
+    trust_remote_code=True,
+    # revision="main",    
+    revision="gptq-4bit-128g-actorder_True",    
+    use_safetensors=True,
 )
 
 
@@ -107,7 +110,7 @@ app = FastAPI()
 @app.get("/")
 async def llmQuery(query: str):
     print("query is", query)    
-    result = qa_chain("can a 14 year old be emplyeed?")
+    result = qa_chain(query)
     print(result)
     return {"result" : result}
 
