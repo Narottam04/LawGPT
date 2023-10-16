@@ -6,7 +6,7 @@ from transformers import AutoTokenizer, TextStreamer, pipeline, AutoModelForCaus
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceInstructEmbeddings
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 
 
 DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -21,8 +21,9 @@ embeddings = HuggingFaceInstructEmbeddings(
 db = Chroma(persist_directory="db", embedding_function=embeddings)
 
 
-model_name_or_path = "TheBloke/Llama-2-13B-chat-GPTQ"
-# model_name_or_path = "TheBloke/Llama-2-7b-Chat-GPTQ"
+# model_name_or_path = "TheBloke/Llama-2-13B-chat-GPTQ"
+model_name_or_path = "TheBloke/Llama-2-7b-Chat-GPTQ"
+# model_name_or_path = "MBZUAI/LaMini-Flan-T5-783M"
 model_basename = "model"
 
 tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=True)
@@ -58,6 +59,19 @@ If a question does not make any sense, or is not factually coherent, explain why
 
 print(DEFAULT_SYSTEM_PROMPT)
 
+# def generate_prompt(prompt: str, system_prompt: str = DEFAULT_SYSTEM_PROMPT) -> str:
+#     # Guanaco style for TinyLlama
+#     B_INST, E_INST = "### Human:", "### Assistant:"
+#     B_SYS, E_SYS = "\n", "\n\n"
+
+#     # # Llama style
+#     # B_INST, E_INST = "[INST]", "[/INST]"
+#     # B_SYS, E_SYS = "<>\n", "\n<>\n\n"
+
+#     prompt = f"{B_INST} {B_SYS}{system_prompt.strip()}{E_SYS}{prompt.strip()} {E_INST}\n\n"
+#     return prompt
+
+
 def generate_prompt(prompt: str, system_prompt: str = DEFAULT_SYSTEM_PROMPT) -> str:
     return f"""
 [INST] <>
@@ -83,14 +97,11 @@ text_pipeline = pipeline(
 
 llm = HuggingFacePipeline(pipeline=text_pipeline, model_kwargs={"temperature": 0})
 
-SYSTEM_PROMPT = "Use the following pieces of context to answer the question in concise manner at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer."
+SYSTEM_PROMPT = "Use the following pieces of context to answer the question in short concise manner at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer."
 
 template = generate_prompt(
-    """
-{context}
-
-Question: {question}
-""",
+    """{context} 
+    Question: {question}""",
     system_prompt=SYSTEM_PROMPT,
 )
 
@@ -106,6 +117,18 @@ qa_chain = RetrievalQA.from_chain_type(
 
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 async def llmQuery(query: str):
