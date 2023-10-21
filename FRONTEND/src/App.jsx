@@ -6,23 +6,26 @@ function App() {
   const [answer, setAnswer] = useState("");
   const [source, setSource] = useState([]);
   const [inputText, setInputText] = useState("");
+  const [queryContext, setQueryContext] = useState("Constitution of India");
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       setQuestion(inputText);
       setAnswer("Searching...");
+      setSource([]);
       // const req = await fetch("/api/?query=" + inputText);
       // const res = await req.json();
       const req = await fetch(
-        `http://localhost:8000?query=${encodeURIComponent(inputText)}`
+        // `http://localhost:8000?query=${encodeURIComponent(inputText)}`,
+        `${import.meta.env.VITE_API_URL}?query=${encodeURIComponent(inputText)}`
       );
       if (!req.ok) {
         throw new Error(`HTTP error! Status: ${req.status}`);
       }
 
       const res = await req.json();
-      setAnswer(res?.result?.result);
+      setAnswer(res?.result?.regional_res);
       setSource(res?.result?.source_documents);
       console.log(res);
     } catch (error) {
@@ -33,6 +36,13 @@ function App() {
     <>
       <Sidebar>
         <div>
+          <h1 className="pl-4 mt-4 font-bold text-xl lg:text-3xl">
+            {queryContext}
+          </h1>
+          <p className="pl-4 mt-2">
+            Ask any query releated to {queryContext}. If you want to ask about
+            specific laws select from the left.
+          </p>
           {question && (
             <>
               {/* user question */}
@@ -50,7 +60,7 @@ function App() {
                   src="https://randomuser.me/api/portraits/women/79.jpg"
                   className="w-12 h-12 rounded-lg"
                 />
-                <p> {answer && answer}</p>
+                <p style={{ whiteSpace: "pre-line" }}> {answer && answer}</p>
               </div>
               <div className="mx-4">
                 <Accordion title="Soucrce Document 1">
