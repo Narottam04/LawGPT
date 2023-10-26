@@ -45,3 +45,19 @@ pip install auto-gptq --extra-index-url https://huggingface.github.io/autogptq-i
 ```
 uvicorn app:app
 ```
+
+## For running LAmini model
+
+First follow all above steps
+
+```
+git lfs install
+```
+
+```
+git clone https://huggingface.co/MBZUAI/LaMini-T5-738M
+```
+
+```
+uvicorn Lamini:app
+```

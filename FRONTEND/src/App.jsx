@@ -1,13 +1,15 @@
 import { useState } from "react";
 import Sidebar from "./Components/lvl1/Sidebar";
 import Accordion from "./Components/lvl0/Accordion";
+import { useSidebar } from "./context/SidebarContext";
+import Logo from "./assets/logo.png";
 function App() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [source, setSource] = useState([]);
   const [inputText, setInputText] = useState("");
-  const [queryContext, setQueryContext] = useState("Constitution of India");
-
+  // const [queryType, setQueryType] = useState("Constitution of India");
+  const { queryType, setHide, hide } = useSidebar();
   async function handleSubmit(e) {
     e.preventDefault();
     try {
@@ -18,7 +20,9 @@ function App() {
       // const res = await req.json();
       const req = await fetch(
         // `http://localhost:8000?query=${encodeURIComponent(inputText)}`,
-        `${import.meta.env.VITE_API_URL}?query=${encodeURIComponent(inputText)}`
+        `${import.meta.env.VITE_API_URL}?query=${encodeURIComponent(
+          inputText
+        )}&type_law=${queryType}`
       );
       if (!req.ok) {
         throw new Error(`HTTP error! Status: ${req.status}`);
@@ -36,11 +40,28 @@ function App() {
     <>
       <Sidebar>
         <div>
-          <h1 className="pl-4 mt-4 font-bold text-xl lg:text-3xl">
-            {queryContext}
-          </h1>
-          <p className="pl-4 mt-2">
-            Ask any query releated to {queryContext}. If you want to ask about
+          <div className="flex items-center pl-4 lg:pl-2 mt-4 gap-2">
+            {/* navigation button */}
+            <button onClick={() => setHide(!hide)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="lg:hidden w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                />
+              </svg>
+            </button>
+            <h1 className=" font-bold text-xl lg:text-3xl">{queryType}</h1>
+          </div>
+          <p className="pl-4  mt-2">
+            Ask any query releated to {queryType}. If you want to ask about
             specific laws select from the left.
           </p>
           {question && (
@@ -48,7 +69,7 @@ function App() {
               {/* user question */}
               <div className="mt-8 mb-4 ml-4 flex gap-4 content-center">
                 <img
-                  src="https://randomuser.me/api/portraits/women/79.jpg"
+                  src="https://api.dicebear.com/7.x/fun-emoji/svg"
                   className="w-12 h-12 rounded-lg"
                 />
                 <p>{question && question}</p>
@@ -57,8 +78,8 @@ function App() {
               {/* llm ans */}
               <div className="mt-8 mb-4 ml-4 flex gap-4 content-center">
                 <img
-                  src="https://randomuser.me/api/portraits/women/79.jpg"
-                  className="w-12 h-12 rounded-lg"
+                  src={Logo}
+                  className="w-12 h-12 rounded-lg object-contain	"
                 />
                 <p style={{ whiteSpace: "pre-line" }}> {answer && answer}</p>
               </div>

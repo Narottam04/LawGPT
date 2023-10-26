@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-
+import { useRef, useState } from "react";
+import { useSidebar } from "../../context/SidebarContext";
+import Logo from "../../assets/logo.png";
 const Menu = (props) => {
   const { children, items } = props;
   const [isOpened, setIsOpened] = useState(true);
+  const { setQueryType, hide, setHide } = useSidebar();
   return (
     <div className="">
       <button
@@ -27,9 +29,12 @@ const Menu = (props) => {
         <ul className="mx-4 px-2 border-l text-sm font-medium">
           {items.map((item, idx) => (
             <li key={idx}>
-              <a
-                href={item.href}
-                className="flex items-center gap-x-2 text-gray-600 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150"
+              <button
+                onClick={() => {
+                  setQueryType(item.name);
+                  setHide(!hide);
+                }}
+                className="flex items-center w-full gap-x-2 text-gray-600 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150"
               >
                 {item.icon ? (
                   <div className="text-gray-500">{item.icon}</div>
@@ -37,7 +42,7 @@ const Menu = (props) => {
                   ""
                 )}
                 {item.name}
-              </a>
+              </button>
             </li>
           ))}
         </ul>
@@ -50,26 +55,26 @@ const Menu = (props) => {
 
 const Sidebar = ({ children }) => {
   const navigation = [
-    {
-      href: "javascript:void(0)",
-      name: "Transactions",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-5 h-5"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3"
-          />
-        </svg>
-      ),
-    },
+    // {
+    //   href: "javascript:void(0)",
+    //   name: "Transactions",
+    //   icon: (
+    //     <svg
+    //       xmlns="http://www.w3.org/2000/svg"
+    //       fill="none"
+    //       viewBox="0 0 24 24"
+    //       strokeWidth={1.5}
+    //       stroke="currentColor"
+    //       className="w-5 h-5"
+    //     >
+    //       <path
+    //         strokeLinecap="round"
+    //         strokeLinejoin="round"
+    //         d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3"
+    //       />
+    //     </svg>
+    //   ),
+    // },
   ];
 
   const navsFooter = [
@@ -125,26 +130,23 @@ const Sidebar = ({ children }) => {
     { name: "Labour Laws", href: "javascript:void(0)", icon: "" },
     { name: "Family Laws", href: "javascript:void(0)", icon: "" },
     { name: "Vehicle Laws", href: "javascript:void(0)", icon: "" },
+    { name: "Property Laws", href: "javascript:void(0)", icon: "" },
+    { name: "Criminal Laws", href: "javascript:void(0)", icon: "" },
   ];
 
   const profileRef = useRef();
-
-  const [isProfileActive, setIsProfileActive] = useState(false);
-
-  useEffect(() => {
-    const handleProfile = (e) => {
-      if (profileRef.current && !profileRef.current.contains(e.target))
-        setIsProfileActive(false);
-    };
-    document.addEventListener("click", handleProfile);
-  }, []);
+  const { hide, setHide } = useSidebar();
 
   return (
     <>
-      <nav className="hidden lg:block fixed top-0 left-0 w-full h-full border-r bg-white space-y-8 sm:w-80">
+      <nav
+        className={`${
+          hide && "hidden"
+        } lg:block fixed top-0 left-0 bottom-0  w-full h-full border-r bg-white space-y-8 sm:w-80`}
+      >
         <div className="flex flex-col h-full px-4">
-          <div className="h-20 flex items-center pl-2">
-            <div className="w-full flex items-center gap-x-4">
+          <div className=" h-20 flex justify-between items-center pl-2">
+            {/* <div className="w-full flex items-center gap-x-4">
               <img
                 src="https://randomuser.me/api/portraits/women/79.jpg"
                 className="w-10 h-10 rounded-full"
@@ -161,7 +163,6 @@ const Sidebar = ({ children }) => {
                 <button
                   ref={profileRef}
                   className="p-1.5 rounded-md text-gray-500 hover:bg-gray-50 active:bg-gray-100"
-                  onClick={() => setIsProfileActive(!isProfileActive)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -176,48 +177,30 @@ const Sidebar = ({ children }) => {
                     />
                   </svg>
                 </button>
-                {isProfileActive ? (
-                  <div className="absolute z-10 top-12 right-0 w-64 rounded-lg bg-white shadow-md border text-sm text-gray-600">
-                    <div className="p-2 text-left">
-                      <span className="block text-gray-500/80 p-2">
-                        alivika@gmail.com
-                      </span>
-                      <a
-                        href="javascript:void(0)"
-                        className="block w-full p-2 text-left rounded-md hover:bg-gray-50 active:bg-gray-100 duration-150"
-                      >
-                        Add another account
-                      </a>
-                      <div className="relative rounded-md hover:bg-gray-50 active:bg-gray-100 duration-150">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          className="w-4 h-4 absolute right-1 inset-y-0 my-auto pointer-events-none"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <select className="w-full cursor-pointer appearance-none bg-transparent p-2 outline-none">
-                          <option disabled selected>
-                            Theme
-                          </option>
-                          <option>Dark</option>
-                          <option>Light</option>
-                        </select>
-                      </div>
-                      <button className="block w-full p-2 text-left rounded-md hover:bg-gray-50 active:bg-gray-100 duration-150">
-                        Logout
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  ""
-                )}
               </div>
+            </div> */}
+            {/* logo */}
+            <div className="gap-2 h-20 flex items-center ">
+              <img src={Logo} alt="LAWGPT" className="w-20" />
+              <h1 className="font-bold text-3xl">LawGPT</h1>
+            </div>
+            <div className="lg:hidden">
+              <button onClick={() => setHide(!hide)}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
           <div className="overflow-auto">
