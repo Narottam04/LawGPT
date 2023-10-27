@@ -126,7 +126,7 @@ const Sidebar = ({ children }) => {
   ];
 
   const nestedNav = [
-    { name: "Constitution Of India", href: "javascript:void(0)", icon: "" },
+    { name: "Know Your Rights", href: "javascript:void(0)", icon: "" },
     { name: "Labour Laws", href: "javascript:void(0)", icon: "" },
     { name: "Family Laws", href: "javascript:void(0)", icon: "" },
     { name: "Vehicle Laws", href: "javascript:void(0)", icon: "" },
@@ -142,7 +142,7 @@ const Sidebar = ({ children }) => {
       <nav
         className={`${
           hide && "hidden"
-        } lg:block fixed top-0 left-0 bottom-0  w-full h-full border-r bg-white space-y-8 sm:w-80`}
+        } lg:block fixed top-0 left-0 bottom-0  w-full h-full border-r bg-gray-100 space-y-8 sm:w-80`}
       >
         <div className="flex flex-col h-full px-4">
           <div className=" h-20 flex justify-between items-center pl-2">
@@ -254,7 +254,7 @@ const Sidebar = ({ children }) => {
           </div>
         </div>
       </nav>
-      <div className="lg:pl-[324px]">{children}</div>
+      <div className="lg:pl-[324px] ">{children}</div>
     </>
   );
 };

@@ -40,7 +40,7 @@ function ChatBot() {
   return (
     <>
       <Sidebar>
-        <div>
+        <div className="">
           <div className="flex items-center pl-4 lg:pl-2 mt-4 gap-2">
             {/* navigation button */}
             <button onClick={() => setHide(!hide)}>
@@ -59,9 +59,9 @@ function ChatBot() {
                 />
               </svg>
             </button>
-            <h1 className=" font-bold text-xl lg:text-3xl">{queryType}</h1>
+            <h1 className=" font-bold text-xl lg:text-4xl">{queryType}</h1>
           </div>
-          <p className="pl-4  mt-2">
+          <p className="pl-4 mt-2 text-2xl">
             Ask any query releated to {queryType}. If you want to ask about
             specific laws select from the left.
           </p>
@@ -114,7 +114,7 @@ function ChatBot() {
               <input
                 type="text"
                 id="voice-search"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5"
+                className="bg-gray-100 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-5"
                 placeholder="Ask Your Query..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}

@@ -7,7 +7,7 @@ const SidebarContext = createContext();
 export const useSidebar = () => useContext(SidebarContext);
 
 export default function SidebarContextProvider({ children }) {
-  const [queryType, setQueryType] = useState("Constitution of India");
+  const [queryType, setQueryType] = useState("Know Your Rights");
   const [hide, setHide] = useState(true);
 
   const value = {
