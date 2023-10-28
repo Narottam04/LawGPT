@@ -21,7 +21,10 @@ function ChatBot() {
       // const res = await req.json();
       const req = await fetch(
         // `http://localhost:8000?query=${encodeURIComponent(inputText)}`,
-        `${import.meta.env.VITE_API_URL}?query=${encodeURIComponent(
+        // `${import.meta.env.VITE_API_URL}?query=${encodeURIComponent(
+        //   inputText
+        // )}&type_law=${queryType}`
+        `https://c720-34-170-127-12.ngrok.io?query=${encodeURIComponent(
           inputText
         )}&type_law=${queryType}`
       );
@@ -61,7 +64,7 @@ function ChatBot() {
             </button>
             <h1 className=" font-bold text-xl lg:text-4xl">{queryType}</h1>
           </div>
-          <p className="pl-4 mt-2 text-2xl">
+          <p className="pl-4 mt-2 lg:text-2xl">
             Ask any query releated to {queryType}. If you want to ask about
             specific laws select from the left.
           </p>
