@@ -1,0 +1,76 @@
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gradient-overlay {
+  /* background: linear-gradient(
+    152.92deg,
+    rgba(253, 156, 77, 0.2) 4.54%,
+    rgba(244, 247, 72, 0.26) 34.2%,
+    rgba(20, 126, 11, 0.1) 77.55%
+  ); */
+  background: linear-gradient(
+    152.92deg,
+    rgba(192, 132, 252, 0.2) 4.54%,
+    rgba(232, 121, 249, 0.26) 34.2%,
+    rgba(192, 132, 252, 0.1) 77.55%
+  );
+
+  /* background: linear-gradient(
+    152.92deg,
+    rgba(238, 161, 72, 1) 43%,
+    rgba(234, 238, 46, 1) 100%
+  ); */
+  filter: blur(118px);
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -100;
+}
+
+.gradient-overlay1 {
+  /* background: linear-gradient(
+    152.92deg,
+    rgba(253, 156, 77, 0.2) 4.54%,
+    rgba(244, 247, 72, 0.26) 34.2%,
+    rgba(20, 126, 11, 0.1) 77.55%
+  ); */
+  background: linear-gradient(
+    152.92deg,
+    rgba(192, 132, 252, 0.2) 4.54%,
+    rgba(232, 121, 249, 0.26) 34.2%,
+    rgba(192, 132, 252, 0.1) 77.55%
+  );
+  /* background: linear-gradient(
+    152.92deg,
+    rgba(238, 161, 72, 1) 43%,
+    rgba(234, 238, 46, 1) 100%
+  ); */
+
+  filter: blur(150px);
+  width: 50%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -100;
+}
